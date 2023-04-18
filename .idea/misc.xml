@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/add_button.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/calendar_background.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/editcontext_background.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/edittitle_background.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/ic_diary.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/ic_menu.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/ic_quote.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/ic_setting.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/drawable/imagequote_border.xml" value="0.2703125" />
+        <entry key="..\:/MoodTracker/app/src/main/res/layout/activity_diary_page.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/layout/activity_diary_record.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/layout/activity_main_page.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/layout/activity_pick_mood.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/layout/activity_quote_page.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/MoodTracker/app/src/main/res/menu/menu_setting.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
