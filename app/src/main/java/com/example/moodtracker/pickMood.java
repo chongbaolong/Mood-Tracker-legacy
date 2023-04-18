@@ -1,11 +1,19 @@
 package com.example.moodtracker;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class pickMood extends AppCompatActivity {
 
@@ -21,8 +29,8 @@ public class pickMood extends AppCompatActivity {
     private ImageView sadFace;
     private ImageView speechlessFace;
 
-    //Variable
-    String selectedEmoji;
+    //Show today Date
+    //String selectedDate = getIntent().getStringExtra("selectedDate");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,46 +55,40 @@ public class pickMood extends AppCompatActivity {
         speechlessFace = findViewById(R.id.speechlessEmoji);
 
         happyFace.setOnClickListener(v -> {
-            selectedEmoji = "happy";
             showToast("Great to hear that you had an amazing day xD");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         angryFace.setOnClickListener(v -> {
-            selectedEmoji = "angry";
             showToast("Completely normal to feel angry sometimes!");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         anxiousFace.setOnClickListener(v -> {
-            selectedEmoji = "anxious";
             showToast("Chill and Relax, My Friend :)");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         confuseFace.setOnClickListener(v -> {
-            selectedEmoji = "confuse";
             showToast("Get some rest! Don't think too much!");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         mehFace.setOnClickListener(v -> {
-            selectedEmoji = "meh";
             showToast("Do something that you enjoy the most :)");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         sadFace.setOnClickListener(v -> {
-            selectedEmoji= "sad";
             showToast("Don't be sad. Express your feeling out!!!");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
 
         speechlessFace.setOnClickListener(v -> {
-            selectedEmoji = "speechless";
             showToast("Is something not going well?");
-            jumpToDiaryPage();
+            jumpToDiaryPage(selectedDate);
         });
+
     }
 
     private void showToast(String message) {
@@ -94,10 +96,13 @@ public class pickMood extends AppCompatActivity {
     }
 
     // Jump to diaryPage
-    private void jumpToDiaryPage() {
+    private void jumpToDiaryPage(String selectedDate) {
         Intent intent = new Intent(pickMood.this, diaryPage.class);
-        intent.putExtra("selectedDate", getIntent().getStringExtra("selectedDate"));
-        intent.putExtra("selectedEmoji", selectedEmoji);
+
+
+        intent.putExtra("selectedDate", selectedDate);
+
         startActivity(intent);
     }
+
 }
