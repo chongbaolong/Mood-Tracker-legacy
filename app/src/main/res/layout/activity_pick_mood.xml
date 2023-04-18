@@ -25,7 +25,7 @@
         android:layout_height="27dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="100dp"
-        android:background="#dedcf5"
+        android:background="#FED5CF"
         android:hint="Selected Date"
         android:text=""
         android:textColor="#000000"
