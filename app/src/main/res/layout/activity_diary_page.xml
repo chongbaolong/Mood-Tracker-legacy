@@ -103,7 +103,7 @@
                     android:scrollbars="vertical"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:textSize="15dp" />
+                    android:textSize="18dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -163,7 +163,7 @@
                     android:inputType="textLongMessage|textAutoCorrect|textMultiLine|text"
                     android:singleLine="false"
                     android:textColor="@color/black"
-                    android:textSize="15dp"
+                    android:textSize="18dp"
                     android:verticalScrollbarPosition="right" />
 
             </android.support.design.widget.TextInputLayout>

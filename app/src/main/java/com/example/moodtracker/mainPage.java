@@ -139,6 +139,8 @@ public class mainPage extends AppCompatActivity {
                                 exist = true;
                                 selectedEmoji = emojiStr;
                             }
+                            else
+                                exist = false;
                         }
                         else if (dateStr.equals(todayDate)) {
                             exist = true;
@@ -266,11 +268,11 @@ public class mainPage extends AppCompatActivity {
                     return true;
 
                 case R.id.summary:
+                    mp.start();
                     Intent intentDiary = new Intent(mainPage.this, SummaryPage.class);
                     startActivity(intentDiary);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;
-//                case R.id.what:
 
                 default:
                     return false;

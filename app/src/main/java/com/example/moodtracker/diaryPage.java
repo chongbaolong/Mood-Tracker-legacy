@@ -62,8 +62,8 @@ public class diaryPage extends AppCompatActivity {
         titleDiary = findViewById(R.id.diaryTitleInputText);
         contentDiary = findViewById(R.id.diaryContentInputText);
 
-        titleDiary.setTypeface(Shared.fontLight);
-        contentDiary.setTypeface(Shared.fontLight);
+        titleDiary.setTypeface(Shared.fontRegular);
+        contentDiary.setTypeface(Shared.fontRegular);
 
         saveAll = findViewById(R.id.saveButton);
         loadAll = findViewById(R.id.loadButton);
