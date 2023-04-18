@@ -138,6 +138,7 @@ public class mainPage extends AppCompatActivity {
                             if (dateStr.equals(selectedDate)) {
                                 exist = true;
                                 selectedEmoji = emojiStr;
+                                break;
                             }
                             else
                                 exist = false;
@@ -145,12 +146,14 @@ public class mainPage extends AppCompatActivity {
                         else if (dateStr.equals(todayDate)) { //means default today date
                             exist = true;
                             selectedEmoji = emojiStr;
+                            break;
                         }
                         else
                             exist = false;
 
                     }
                     cursor.close();
+
                 } catch (SQLException e) {
                     // handle exception
                 }
