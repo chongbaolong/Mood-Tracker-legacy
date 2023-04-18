@@ -42,6 +42,8 @@ public class diaryPage extends AppCompatActivity {
 
     private MediaPlayer mp;
 
+    boolean DiaryEXIST = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,9 +177,6 @@ public class diaryPage extends AppCompatActivity {
                     Toast.makeText(diaryPage.this, "Please enter your story...", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    // bitmap
-                    // selectedEmojiDiary
-                    // selectedDateDiary
                     String selectedDate = getIntent().getStringExtra("selectedDate");
                     String selectedEmoji = getIntent().getStringExtra("selectedEmoji");
                     String diaryTitle = ((TextInputEditText) findViewById(R.id.diaryTitleInputText)).getText().toString();
@@ -199,10 +198,10 @@ public class diaryPage extends AppCompatActivity {
                         Toast.makeText(diaryPage.this, "Saved! Live in the moment! \n My Friend!", Toast.LENGTH_SHORT).show();
                     }
 
-                    /*Intent intent = new Intent(diaryPage.this, mainPage.class);
+                    Intent intent = new Intent(diaryPage.this, mainPage.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();*/
+                    finish();
                 }
 
             }
@@ -255,13 +254,21 @@ public class diaryPage extends AppCompatActivity {
                         if(dateStr.equals(selectedDateDiary)){
                             titleDiary.setText(title);
                             contentDiary.setText(content);
+                            DiaryEXIST = true;
                         }
+                        else
+                            DiaryEXIST = false;
                         //entries.add(entry);
                     }
                     cursor.close();
                 } catch (SQLException e) {
                     // handle exception
                 }
+
+                if(DiaryEXIST == false)
+                    Toast.makeText(diaryPage.this, "Error: Failed to load your record...\n Your record doesn't exist!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(diaryPage.this, "Loaded! Here is your record...\n My Friend!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -273,13 +280,79 @@ public class diaryPage extends AppCompatActivity {
                 mp.start();
                 String selectedDate = getIntent().getStringExtra("selectedDate");
 
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                /*SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                 String selection = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
                 String[] selectionArgs = { selectedDate };
 
-                db.delete(Diary.DiaryEntry.TABLE_NAME, selection, selectionArgs);
+                db.delete(Diary.DiaryEntry.TABLE_NAME, selection, selectionArgs);*/
 
+                String[] projection = {
+                        Diary.DiaryEntry._ID,
+                        Diary.DiaryEntry.COLUMN_TITLE,
+                        Diary.DiaryEntry.COLUMN_CONTENT,
+                        Diary.DiaryEntry.COLUMN_SELECTED_DATE,
+                        Diary.DiaryEntry.COLUMN_SELECTED_EMOJI
+                };
+
+                String selection = null;
+                String[] selectionArgs = null;
+
+                String sortOrder =
+                        Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
+
+                try (SQLiteDatabase db = dbHelper.getWritableDatabase();) {
+                    String selection2 = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
+                    String[] selectionArgs2 = { selectedDate };
+
+                    db.delete(Diary.DiaryEntry.TABLE_NAME, selection2, selectionArgs2);
+                } catch (SQLException e) {
+                    // handle exception
+                }
+
+                try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+                    Cursor cursor = db.query(
+                            Diary.DiaryEntry.TABLE_NAME,   // The table to query
+                            projection,                                 // The columns to return
+                            selection,                                  // The columns for the WHERE clause
+                            selectionArgs,                              // The values for the WHERE clause
+                            null,                                // Don't group the rows
+                            null,                                 // Don't filter by row groups
+                            sortOrder                                   // The sort order
+                    );
+
+                    while (cursor.moveToNext()) {
+                        int id = cursor.getInt(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry._ID));
+                        String dateStr = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_DATE)); //2023/04/18
+                        String emojiStr = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_EMOJI));
+                        String title = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
+                        String content = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
+                        //DiaryEntry entry = new Diary(id, dateStr, emojiStr, title, content);
+                        if(dateStr.equals(selectedDateDiary)){
+
+                            DiaryEXIST = true;
+                        }
+                        else
+                            DiaryEXIST = false;
+                        //entries.add(entry);
+                    }
+                    cursor.close();
+                } catch (SQLException e) {
+                    // handle exception
+                }
+
+                if(DiaryEXIST == false)
+                    Toast.makeText(diaryPage.this, "Error: Failed to delete your record...\n Your record doesn't exist!", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(diaryPage.this, "Deleted! \n My Friend!", Toast.LENGTH_SHORT).show();
+                    titleDiary.setText(null);
+                    contentDiary.setText(null);
+                }
             }
         });
 
