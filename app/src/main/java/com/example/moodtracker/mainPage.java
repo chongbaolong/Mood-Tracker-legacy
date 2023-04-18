@@ -109,7 +109,7 @@ public class mainPage extends AppCompatActivity {
                 String sortOrder =
                         Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
 
-                List<Diary.DiaryEntry> entries = new ArrayList<>();
+                //List<Diary.DiaryEntry> entries = new ArrayList<>();
 
                 try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
                     Cursor cursor = db.query(
@@ -134,7 +134,7 @@ public class mainPage extends AppCompatActivity {
                         String content = cursor.getString(
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
 
-                        if (selectedDate.length() > 8) {
+                        if (selectedDate.length() > 8) { //means user clicked the date
                             if (dateStr.equals(selectedDate)) {
                                 exist = true;
                                 selectedEmoji = emojiStr;
@@ -142,7 +142,7 @@ public class mainPage extends AppCompatActivity {
                             else
                                 exist = false;
                         }
-                        else if (dateStr.equals(todayDate)) {
+                        else if (dateStr.equals(todayDate)) { //means default today date
                             exist = true;
                             selectedEmoji = emojiStr;
                         }
@@ -158,8 +158,6 @@ public class mainPage extends AppCompatActivity {
                 if(exist == true) {
 
                     Toast.makeText(mainPage.this, "This day's record already exists! Redirecting...", Toast.LENGTH_SHORT).show();
-
-
 
                     Intent intent = new Intent(mainPage.this, diaryPage.class);
                     //Intent intent = new Intent(mainPage.this, pickMood.class);

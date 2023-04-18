@@ -43,6 +43,7 @@ public class diaryPage extends AppCompatActivity {
     private MediaPlayer mp;
 
     boolean DiaryEXIST = false;
+    boolean DiaryEXIST2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +213,8 @@ public class diaryPage extends AppCompatActivity {
             public void onClick(View v) {
 
                 mp.start();
+                String selectedDate = getIntent().getStringExtra("selectedDate");
+
                 String[] projection = {
                         Diary.DiaryEntry._ID,
                         Diary.DiaryEntry.COLUMN_TITLE,
@@ -250,15 +253,13 @@ public class diaryPage extends AppCompatActivity {
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
                         String content = cursor.getString(
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
-                        //DiaryEntry entry = new Diary(id, dateStr, emojiStr, title, content);
-                        if(dateStr.equals(selectedDateDiary)){
+                        if(dateStr.equals(selectedDate)){
                             titleDiary.setText(title);
                             contentDiary.setText(content);
                             DiaryEXIST = true;
                         }
                         else
                             DiaryEXIST = false;
-                        //entries.add(entry);
                     }
                     cursor.close();
                 } catch (SQLException e) {
@@ -301,15 +302,6 @@ public class diaryPage extends AppCompatActivity {
                 String sortOrder =
                         Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
 
-                try (SQLiteDatabase db = dbHelper.getWritableDatabase();) {
-                    String selection2 = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
-                    String[] selectionArgs2 = { selectedDate };
-
-                    db.delete(Diary.DiaryEntry.TABLE_NAME, selection2, selectionArgs2);
-                } catch (SQLException e) {
-                    // handle exception
-                }
-
                 try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
                     Cursor cursor = db.query(
                             Diary.DiaryEntry.TABLE_NAME,   // The table to query
@@ -332,26 +324,31 @@ public class diaryPage extends AppCompatActivity {
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
                         String content = cursor.getString(
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
-                        //DiaryEntry entry = new Diary(id, dateStr, emojiStr, title, content);
-                        if(dateStr.equals(selectedDateDiary)){
-
-                            DiaryEXIST = true;
+                        if(dateStr.equals(selectedDate)){
+                            DiaryEXIST2 = true;
                         }
                         else
-                            DiaryEXIST = false;
-                        //entries.add(entry);
+                            DiaryEXIST2 = false;
                     }
                     cursor.close();
                 } catch (SQLException e) {
                     // handle exception
                 }
 
-                if(DiaryEXIST == false)
+                if(DiaryEXIST2 == false)
                     Toast.makeText(diaryPage.this, "Error: Failed to delete your record...\n Your record doesn't exist!", Toast.LENGTH_SHORT).show();
                 else {
+                    try (SQLiteDatabase db = dbHelper.getWritableDatabase();) {
+                        String selection2 = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
+                        String[] selectionArgs2 = { selectedDate };
+
+                        db.delete(Diary.DiaryEntry.TABLE_NAME, selection2, selectionArgs2);
+                    } catch (SQLException e) {
+                        // handle exception
+                    }
                     Toast.makeText(diaryPage.this, "Deleted! \n My Friend!", Toast.LENGTH_SHORT).show();
-                    titleDiary.setText(null);
-                    contentDiary.setText(null);
+                    titleDiary.setText("");
+                    contentDiary.setText("");
                 }
             }
         });
