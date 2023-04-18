@@ -66,6 +66,8 @@ public class mainPage extends AppCompatActivity {
         tvMainPage = findViewById(R.id.textViewDateMainPage);
         cvMainPage = findViewById(R.id.calendarView);
 
+        cvMainPage.setMaxDate(System.currentTimeMillis());
+
         cvMainPage.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
