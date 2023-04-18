@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class mainPage extends AppCompatActivity {
 
@@ -281,7 +282,7 @@ public class mainPage extends AppCompatActivity {
 
         if (item_id == R.id.setting) {
 
-            Intent intentSetting = new Intent(mainPage.this, setting.class);
+            Intent intentSetting = new Intent(mainPage.this, Setting.class);
             startActivity(intentSetting);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 

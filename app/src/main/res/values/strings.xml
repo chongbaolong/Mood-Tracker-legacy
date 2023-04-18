@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MoodTracker</string>
+    <string name="diary_menu_picture">Insert picture</string>
+    <string name="diary_menu_emoji">Insert emoji&amp;sticker</string>
 </resources>
