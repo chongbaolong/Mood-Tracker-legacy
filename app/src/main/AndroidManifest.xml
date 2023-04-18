@@ -28,9 +28,6 @@
             android:exported="false"
             android:parentActivityName=".mainPage"/>
         <activity
-            android:name=".diaryRecord"
-            android:exported="false" />
-        <activity
             android:name=".diaryPage"
             android:exported="false" />
         <activity
