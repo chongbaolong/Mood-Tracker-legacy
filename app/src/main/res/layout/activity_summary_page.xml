@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SummaryPage"
-    android:background ="#90FFCF70">
+    android:background ="#FED5CF">
 
     <LinearLayout
         android:layout_width = "match_parent"

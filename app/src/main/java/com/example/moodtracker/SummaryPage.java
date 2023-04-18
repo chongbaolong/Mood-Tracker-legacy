@@ -156,7 +156,7 @@ public class SummaryPage extends AppCompatActivity {
                 return 7;
             case "angry":
                 return 6;
-            case "anxiouns":
+            case "anxious":
                 return 5;
             case "confuse":
                 return 4;
@@ -198,7 +198,7 @@ public class SummaryPage extends AppCompatActivity {
                     happy++;
                 }else if(emoji.equals("angry")){
                     angry++;
-                }else if(emoji.equals("anxiouns")){
+                }else if(emoji.equals("anxious")){
                     anxious++;
                 }else if(emoji.equals("confuse")){
                     confuse++;
@@ -213,7 +213,7 @@ public class SummaryPage extends AppCompatActivity {
             }while (cursor.moveToPrevious());
             numEmoji.add(new PieEntry(happy,"Happy"));
             numEmoji.add(new PieEntry(angry,"Angry"));
-            numEmoji.add(new PieEntry(anxious,"Anxiouns"));
+            numEmoji.add(new PieEntry(anxious,"Anxious"));
             numEmoji.add(new PieEntry(confuse,"Confuse"));
             numEmoji.add(new PieEntry(meh,"Meh"));
             numEmoji.add(new PieEntry(sad,"Sad"));
