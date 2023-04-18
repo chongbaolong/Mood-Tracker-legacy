@@ -21,12 +21,13 @@
 
     <TextView
         android:id="@+id/textViewDate"
-        android:layout_width="125dp"
+        android:layout_width="120dp"
         android:layout_height="27dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="100dp"
         android:background="#FED5CF"
-        android:hint="Selected Date"
+        android:gravity="center"
+        android:hint="SelectedDate"
         android:text=""
         android:textColor="#000000"
         android:textSize="20dp"

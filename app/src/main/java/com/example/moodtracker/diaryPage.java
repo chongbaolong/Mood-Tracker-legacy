@@ -62,18 +62,27 @@ public class diaryPage extends AppCompatActivity {
         titleDiary = findViewById(R.id.diaryTitleInputText);
         contentDiary = findViewById(R.id.diaryContentInputText);
 
+        titleDiary.setTypeface(Shared.fontLight);
+        contentDiary.setTypeface(Shared.fontLight);
+
         saveAll = findViewById(R.id.saveButton);
         loadAll = findViewById(R.id.loadButton);
         deleteAll = findViewById(R.id.deleteButton);
+
+        saveAll.setTypeface(Shared.fontBold);
+        loadAll.setTypeface(Shared.fontBold);
+        deleteAll.setTypeface(Shared.fontBold);
 
         // Get selectedDate and selectedEmoji from previous
         String selectedDateDiary = getIntent().getStringExtra("selectedDate");
         tvDate = findViewById(R.id.dateText);
         tvDate.setText(selectedDateDiary);
+        tvDate.setTypeface(Shared.fontRegular);
 
         String selectedEmojiDiary = getIntent().getStringExtra("selectedEmoji");
         tvEmoji = findViewById(R.id.moodSelectedText);
         tvEmoji.setText(selectedEmojiDiary + "~");
+        tvEmoji.setTypeface(Shared.fontRegular);
 
         emojiImage = findViewById(R.id.moodSelectedImage);
 

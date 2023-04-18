@@ -18,6 +18,8 @@ public class pickMood extends AppCompatActivity {
 
     //2)
     TextView tv;
+    TextView tv2;
+    TextView tv3;
 
     //Emoji Variable
     private ImageView happyFace;
@@ -49,6 +51,13 @@ public class pickMood extends AppCompatActivity {
         String selectedDate = getIntent().getStringExtra("selectedDate");
         tv = findViewById(R.id.textViewDate);
         tv.setText(" "+selectedDate+".");
+
+        tv2 = findViewById(R.id.textView);
+        tv3 = findViewById(R.id.textViewHello);
+
+        tv.setTypeface(Shared.fontRegular);
+        tv2.setTypeface(Shared.fontLight);
+        tv3.setTypeface(Shared.fontLight);
 
         //Click Emoji
         happyFace = findViewById(R.id.happyEmoji);
