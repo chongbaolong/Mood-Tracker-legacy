@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TextInputEditText;
@@ -21,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.moodtracker.utils.Shared;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +31,6 @@ public class diaryPage extends AppCompatActivity {
 
     private EditText titleDiary;
     private EditText contentDiary;
-    private ConstraintLayout contentLayout;
 
     private Button saveAll;
     private Button loadAll;
@@ -37,6 +39,8 @@ public class diaryPage extends AppCompatActivity {
     private TextView tvDate;
     private TextView tvEmoji;
     private ImageView emojiImage;
+
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,22 +54,35 @@ public class diaryPage extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        Shared.initialize(getBaseContext());
+
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.btn_sound);
+
 
         titleDiary = findViewById(R.id.diaryTitleInputText);
         contentDiary = findViewById(R.id.diaryContentInputText);
+
+        titleDiary.setTypeface(Shared.fontLight);
+        contentDiary.setTypeface(Shared.fontLight);
 
         saveAll = findViewById(R.id.saveButton);
         loadAll = findViewById(R.id.loadButton);
         deleteAll = findViewById(R.id.deleteButton);
 
+        saveAll.setTypeface(Shared.fontBold);
+        loadAll.setTypeface(Shared.fontBold);
+        deleteAll.setTypeface(Shared.fontBold);
+
         // Get selectedDate and selectedEmoji from previous
         String selectedDateDiary = getIntent().getStringExtra("selectedDate");
         tvDate = findViewById(R.id.dateText);
         tvDate.setText(selectedDateDiary);
+        tvDate.setTypeface(Shared.fontRegular);
 
         String selectedEmojiDiary = getIntent().getStringExtra("selectedEmoji");
         tvEmoji = findViewById(R.id.moodSelectedText);
         tvEmoji.setText(selectedEmojiDiary + "~");
+        tvEmoji.setTypeface(Shared.fontRegular);
 
         emojiImage = findViewById(R.id.moodSelectedImage);
 
@@ -77,7 +94,7 @@ public class diaryPage extends AppCompatActivity {
 
         //contentLayout = findViewById(R.id.contentLayout);
 
-        //bottom navigation for 1.Align button 2.Insert picture button 3.Emoji & Sticker button
+        //bottom navigation for 1.Insert picture button 2.Emoji & Sticker button
 
         bottomView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -127,11 +144,13 @@ public class diaryPage extends AppCompatActivity {
                 // return true;
 
                 case R.id.item1:
+                    mp.start();
                     //insert picture
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     return true;
 
                 case R.id.item2:
+                    mp.start();
                     //insert emoji & sticker
                     return true;
 
@@ -146,6 +165,7 @@ public class diaryPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mp.start();
                 String title = titleDiary.getText().toString();
                 String content = contentDiary.getText().toString();
 
@@ -192,9 +212,7 @@ public class diaryPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                // Define a projection that specifies which columns from the database
-                // you will actually use after this query.
+                mp.start();
                 String[] projection = {
                         Diary.DiaryEntry._ID,
                         Diary.DiaryEntry.COLUMN_TITLE,
@@ -203,11 +221,9 @@ public class diaryPage extends AppCompatActivity {
                         Diary.DiaryEntry.COLUMN_SELECTED_EMOJI
                 };
 
-                // Filter results WHERE "title" = 'My Title'
                 String selection = null;
                 String[] selectionArgs = null;
 
-                // How you want the results sorted in the resulting Cursor
                 String sortOrder =
                         Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
 
@@ -219,8 +235,8 @@ public class diaryPage extends AppCompatActivity {
                             projection,                                 // The columns to return
                             selection,                                  // The columns for the WHERE clause
                             selectionArgs,                              // The values for the WHERE clause
-                            null,                                       // Don't group the rows
-                            null,                                       // Don't filter by row groups
+                            null,                                // Don't group the rows
+                            null,                                 // Don't filter by row groups
                             sortOrder                                   // The sort order
                     );
 
@@ -254,6 +270,7 @@ public class diaryPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mp.start();
                 String selectedDate = getIntent().getStringExtra("selectedDate");
 
                 SQLiteDatabase db = dbHelper.getWritableDatabase();

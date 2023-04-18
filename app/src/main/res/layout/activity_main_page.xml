@@ -12,6 +12,7 @@
         android:layout_height="360dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/calendar_background"
+        android:theme="@style/CalendarViewTheme"
         android:dateTextAppearance="@style/CalendarDate"
         android:headerMonthTextAppearance="@style/CalendarHeader"
         android:weekDayTextAppearance="@style/CalendarWeek"

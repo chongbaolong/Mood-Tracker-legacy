@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.moodtracker.utils.Shared;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
@@ -38,10 +41,16 @@ public class mainPage extends AppCompatActivity {
     boolean exist = false;
     String selectedEmoji;
 
+    private MediaPlayer mp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+
+        Shared.initialize(getBaseContext());
+
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.btn_sound);
 
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -62,6 +71,7 @@ public class mainPage extends AppCompatActivity {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String date = dayOfMonth + "/" + (month + 1) + "/" + year;
 
+                mp.start();
                 //add on
                 DateFormat inputFormat = new SimpleDateFormat("d/M/yyyy");
                 DateFormat outputFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -80,6 +90,7 @@ public class mainPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mp.start();
                 String selectedDate = tvMainPage.getText().toString();
 
                 String[] projection = {
@@ -106,8 +117,8 @@ public class mainPage extends AppCompatActivity {
                             projection,                                 // The columns to return
                             selection,                                  // The columns for the WHERE clause
                             selectionArgs,                              // The values for the WHERE clause
-                            null,                                       // Don't group the rows
-                            null,                                       // Don't filter by row groups
+                            null,                                // Don't group the rows
+                            null,                                 // Don't filter by row groups
                             sortOrder                                   // The sort order
                     );
 
@@ -248,6 +259,7 @@ public class mainPage extends AppCompatActivity {
         bottomView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.quote:
+                    mp.start();
                     Intent intentQuote = new Intent(mainPage.this, quotePage.class);
                     startActivity(intentQuote);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
