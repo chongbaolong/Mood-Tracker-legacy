@@ -19,6 +19,7 @@
         <item name="android:textColor">@color/calendar_header_text_color</item>
     </style>
 
+    <!--    Selected Date Background-->
     <style name="CalendarViewTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">#FF4081</item> <!-- Set the desired background color -->
     </style>
