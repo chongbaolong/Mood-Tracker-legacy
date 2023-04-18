@@ -18,7 +18,8 @@
         android:theme="@style/Theme.MoodTracker">
         <activity
             android:name=".SummaryPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".mainPage" />
         <activity
             android:name=".Setting"
             android:exported="false"
