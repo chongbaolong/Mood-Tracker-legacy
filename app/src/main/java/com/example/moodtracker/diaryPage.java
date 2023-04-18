@@ -196,7 +196,7 @@ public class diaryPage extends AppCompatActivity {
                     if (newRowId == -1) {
                         Toast.makeText(diaryPage.this, "Error: Failed to save data to database", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(diaryPage.this, "Saved! Live in the moment! \n My Friend!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(diaryPage.this, "Saved! Live in the moment! \nMy Friend!", Toast.LENGTH_SHORT).show();
                     }
 
                     Intent intent = new Intent(diaryPage.this, mainPage.class);
@@ -269,9 +269,9 @@ public class diaryPage extends AppCompatActivity {
                 }
 
                 if(DiaryEXIST == false)
-                    Toast.makeText(diaryPage.this, "Error: Failed to load your record...\n Your record doesn't exist!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(diaryPage.this, "Error: Failed to load your record...\nYour record doesn't exist!", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(diaryPage.this, "Loaded! Here is your record...\n My Friend!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(diaryPage.this, "Loaded! Here is your record...\nMy Friend!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -339,7 +339,7 @@ public class diaryPage extends AppCompatActivity {
                 }
 
                 if(DiaryEXIST2 == false)
-                    Toast.makeText(diaryPage.this, "Error: Failed to delete your record...\n Your record doesn't exist!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(diaryPage.this, "Error: Failed to delete your record...\nYour record doesn't exist!", Toast.LENGTH_SHORT).show();
                 else {
                     try (SQLiteDatabase db = dbHelper.getWritableDatabase();) {
                         String selection2 = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
@@ -349,7 +349,7 @@ public class diaryPage extends AppCompatActivity {
                     } catch (SQLException e) {
                         // handle exception
                     }
-                    Toast.makeText(diaryPage.this, "Deleted! \n My Friend!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(diaryPage.this, "Deleted! \nMy Friend!", Toast.LENGTH_SHORT).show();
                     titleDiary.setText("");
                     contentDiary.setText("");
                 }
