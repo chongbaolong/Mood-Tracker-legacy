@@ -25,6 +25,7 @@ public class mainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+
         //2)Calendar
         addBtn = (Button) findViewById(R.id.addButton);
 
@@ -33,8 +34,10 @@ public class mainPage extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intentAdd = new Intent(mainPage.this, pickMood.class);
+
                 String selectedDate = tvMainPage.getText().toString();
                 intentAdd.putExtra("selectedDate", selectedDate);
+
                 startActivity(intentAdd);
             }
         });
@@ -59,17 +62,18 @@ public class mainPage extends AppCompatActivity {
                     Intent intentQuote = new Intent(mainPage.this, quotePage.class);
                     startActivity(intentQuote);
                     return true;
-                case R.id.diaryRecord:
-                    Intent intentDiary = new Intent(mainPage.this, diaryRecord.class);
+                /*case R.id.diaryRecyler:
+                    Intent intentDiary = new Intent(mainPage.this, diaryRecyclerView.class);
                     startActivity(intentDiary);
-                    return true;
-//                case R.id.what:
+                    return true;*/
                 default:
                     return false;
             }
         });
 
     }
+
+
 
     //1) Setting
     public boolean onCreateOptionsMenu(Menu menu) {
