@@ -18,7 +18,8 @@
         android:theme="@style/Theme.MoodTracker">
         <activity
             android:name=".Setting"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".mainPage"/>
         <activity
             android:name=".quotePage"
             android:exported="false"
@@ -29,7 +30,8 @@
             android:parentActivityName=".mainPage"/>
         <activity
             android:name=".diaryPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".mainPage"/>
         <activity
             android:name=".mainPage"
             android:exported="true" >
