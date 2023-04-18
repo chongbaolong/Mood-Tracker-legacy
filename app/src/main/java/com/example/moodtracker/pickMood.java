@@ -3,11 +3,14 @@ package com.example.moodtracker;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.moodtracker.utils.Shared;
 
 import java.io.ByteArrayOutputStream;
 
@@ -28,6 +31,8 @@ public class pickMood extends AppCompatActivity {
     //Variable
     String selectedEmoji;
 
+    private MediaPlayer mp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +40,10 @@ public class pickMood extends AppCompatActivity {
 
         //backNavigation
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Shared.initialize(getBaseContext());
+
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.btn_sound);
 
         //Show today Date
         String selectedDate = getIntent().getStringExtra("selectedDate");
@@ -51,6 +60,7 @@ public class pickMood extends AppCompatActivity {
         speechlessFace = findViewById(R.id.speechlessEmoji);
 
         happyFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "happy";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) happyFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -64,6 +74,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         angryFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "angry";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) angryFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -77,6 +88,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         anxiousFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "anxious";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) anxiousFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -89,6 +101,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         confuseFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "confuse";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) confuseFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -101,6 +114,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         mehFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "meh";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) mehFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -113,6 +127,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         sadFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji= "sad";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) sadFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -125,6 +140,7 @@ public class pickMood extends AppCompatActivity {
         });
 
         speechlessFace.setOnClickListener(v -> {
+            mp.start();
             selectedEmoji = "speechless";
             BitmapDrawable bitmapDrawable = (BitmapDrawable) speechlessFace.getDrawable();
             Bitmap bitmap = bitmapDrawable.getBitmap();

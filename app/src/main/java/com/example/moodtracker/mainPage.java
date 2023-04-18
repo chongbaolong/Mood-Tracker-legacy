@@ -117,8 +117,8 @@ public class mainPage extends AppCompatActivity {
                             projection,                                 // The columns to return
                             selection,                                  // The columns for the WHERE clause
                             selectionArgs,                              // The values for the WHERE clause
-                            null,                                       // Don't group the rows
-                            null,                                       // Don't filter by row groups
+                            null,                                // Don't group the rows
+                            null,                                 // Don't filter by row groups
                             sortOrder                                   // The sort order
                     );
 
