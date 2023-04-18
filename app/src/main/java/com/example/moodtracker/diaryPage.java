@@ -253,10 +253,12 @@ public class diaryPage extends AppCompatActivity {
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
                         String content = cursor.getString(
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
-                        if(dateStr.equals(selectedDate)){
+
+                        if (dateStr.equals(selectedDate)) {
+                            DiaryEXIST = true;
                             titleDiary.setText(title);
                             contentDiary.setText(content);
-                            DiaryEXIST = true;
+                            break;
                         }
                         else
                             DiaryEXIST = false;
@@ -324,11 +326,12 @@ public class diaryPage extends AppCompatActivity {
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
                         String content = cursor.getString(
                                 cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
-                        if(dateStr.equals(selectedDate)){
-                            DiaryEXIST2 = true;
+                        if (dateStr.equals(selectedDate)) {
+                            DiaryEXIST2= true;
+                            break;
                         }
                         else
-                            DiaryEXIST2 = false;
+                            DiaryEXIST2= false;
                     }
                     cursor.close();
                 } catch (SQLException e) {
