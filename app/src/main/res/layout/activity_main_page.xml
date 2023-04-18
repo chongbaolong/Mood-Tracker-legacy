@@ -24,14 +24,13 @@
         android:id="@+id/addButton"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="372dp"
+        android:background="@drawable/add_button"
         android:text="+"
         android:textSize="45dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/add_button"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewDateMainPage"
@@ -51,8 +50,10 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="409dp"
-        android:layout_height="59dp"
+        android:layout_height="50dp"
         android:background="@drawable/calendar_background"
+        app:itemIconTint="#000000"
+        app:itemTextColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
