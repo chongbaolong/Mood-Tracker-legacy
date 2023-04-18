@@ -139,6 +139,8 @@ public class mainPage extends AppCompatActivity {
                                 exist = true;
                                 selectedEmoji = emojiStr;
                             }
+                            else
+                                exist = false;
                         }
                         else if (dateStr.equals(todayDate)) {
                             exist = true;
