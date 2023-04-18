@@ -1,6 +1,12 @@
 package com.example.moodtracker;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +17,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class mainPage extends AppCompatActivity {
 
@@ -20,27 +34,24 @@ public class mainPage extends AppCompatActivity {
     TextView tvMainPage;
     CalendarView cvMainPage;
 
+    boolean exist = false;
+    String selectedEmoji;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //2)Calendar
         addBtn = (Button) findViewById(R.id.addButton);
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        DiaryDBHelper dbHelper = new DiaryDBHelper(mainPage.this);
 
-                Intent intentAdd = new Intent(mainPage.this, pickMood.class);
-
-                String selectedDate = tvMainPage.getText().toString();
-                intentAdd.putExtra("selectedDate", selectedDate);
-
-                startActivity(intentAdd);
-            }
-        });
+        //String selectedDate = tvMainPage.getText().toString();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String todayDate = dateFormat.format(new Date());
 
         tvMainPage = findViewById(R.id.textViewDateMainPage);
         cvMainPage = findViewById(R.id.calendarView);
@@ -48,8 +59,185 @@ public class mainPage extends AppCompatActivity {
         cvMainPage.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String date = dayOfMonth+"/"+(month+1)+"/"+year;
-                tvMainPage.setText(date);
+                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+
+                //add on
+                DateFormat inputFormat = new SimpleDateFormat("d/M/yyyy");
+                DateFormat outputFormat = new SimpleDateFormat("yyyy/MM/dd");
+                Date date1 = null;
+                try {
+                    date1 = inputFormat.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String formattedDate = outputFormat.format(date1);
+                tvMainPage.setText(formattedDate);
+            }
+        });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String selectedDate = tvMainPage.getText().toString();
+
+                String[] projection = {
+                        Diary.DiaryEntry._ID,
+                        Diary.DiaryEntry.COLUMN_TITLE,
+                        Diary.DiaryEntry.COLUMN_CONTENT,
+                        Diary.DiaryEntry.COLUMN_SELECTED_DATE,
+                        Diary.DiaryEntry.COLUMN_SELECTED_EMOJI
+                };
+
+                // Filter results WHERE "title" = 'My Title'
+                String selection = null;
+                String[] selectionArgs = null;
+
+                // How you want the results sorted in the resulting Cursor
+                String sortOrder =
+                        Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
+
+                List<Diary.DiaryEntry> entries = new ArrayList<>();
+
+                try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+                    Cursor cursor = db.query(
+                            Diary.DiaryEntry.TABLE_NAME,   // The table to query
+                            projection,                                 // The columns to return
+                            selection,                                  // The columns for the WHERE clause
+                            selectionArgs,                              // The values for the WHERE clause
+                            null,                                       // Don't group the rows
+                            null,                                       // Don't filter by row groups
+                            sortOrder                                   // The sort order
+                    );
+
+                    while (cursor.moveToNext()) {
+                        int id = cursor.getInt(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry._ID));
+                        String dateStr = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_DATE)); //2023/04/18
+                        String emojiStr = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_EMOJI));
+                        String title = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
+                        String content = cursor.getString(
+                                cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
+
+                        if (selectedDate.length() > 8) {
+                            if (dateStr.equals(selectedDate)) {
+                                exist = true;
+                                selectedEmoji = emojiStr;
+                            }
+                        }
+                        else if (dateStr.equals(todayDate)) {
+                            exist = true;
+                            selectedEmoji = emojiStr;
+                        }
+                        else
+                            exist = false;
+
+                    }
+                    cursor.close();
+                } catch (SQLException e) {
+                    // handle exception
+                }
+
+                if(exist == true) {
+
+                    Toast.makeText(mainPage.this, "This day's record already exists! Redirecting...", Toast.LENGTH_SHORT).show();
+
+
+
+                    Intent intent = new Intent(mainPage.this, diaryPage.class);
+                    //Intent intent = new Intent(mainPage.this, pickMood.class);
+
+                    intent.putExtra("selectedEmoji", selectedEmoji);
+
+                    if(selectedEmoji.equals("happy")){
+                        Bitmap happyFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.happy);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), happyFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("angry")){
+                        Bitmap angryFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.angry);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), angryFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("anxious")){
+                        Bitmap anxiousFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.anxious);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), anxiousFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("confuse")){
+                        Bitmap confuseFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.confused);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), confuseFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("meh")){
+                        Bitmap mehFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.meh);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), mehFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("sad")){
+                        Bitmap sadFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.sad);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), sadFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+                    else if(selectedEmoji.equals("speechless")){
+                        Bitmap speechlessFaceBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.speechless);
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), speechlessFaceBitmap);
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        intent.putExtra("emojiImage", byteArray);
+                    }
+
+                    if (selectedDate.length() > 8) {
+                        intent.putExtra("selectedDate", selectedDate);
+                    } else {
+                        intent.putExtra("selectedDate", todayDate);
+                    }
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+                else {
+
+                    Toast.makeText(mainPage.this, "Make new record...", Toast.LENGTH_SHORT).show();
+                    Intent intentAdd = new Intent(mainPage.this, pickMood.class);
+
+                    if (selectedDate.length() > 8) {
+                        intentAdd.putExtra("selectedDate", selectedDate);
+                    } else {
+                        intentAdd.putExtra("selectedDate", todayDate);
+                    }
+
+                    startActivity(intentAdd);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
             }
         });
 
@@ -61,11 +249,16 @@ public class mainPage extends AppCompatActivity {
                 case R.id.quote:
                     Intent intentQuote = new Intent(mainPage.this, quotePage.class);
                     startActivity(intentQuote);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;
-                /*case R.id.diaryRecyler:
-                    Intent intentDiary = new Intent(mainPage.this, diaryRecyclerView.class);
+
+                /*case R.id.diaryRecord:
+                    Intent intentDiary = new Intent(mainPage.this, diaryRecord.class);
                     startActivity(intentDiary);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;*/
+//                case R.id.what:
+
                 default:
                     return false;
             }
@@ -88,8 +281,9 @@ public class mainPage extends AppCompatActivity {
 
         if (item_id == R.id.setting) {
 
-            Intent intentSetting = new Intent(mainPage.this, Setting.class);
+            Intent intentSetting = new Intent(mainPage.this, setting.class);
             startActivity(intentSetting);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
             return true;
         }

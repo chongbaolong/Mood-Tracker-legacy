@@ -1,11 +1,15 @@
 package com.example.moodtracker;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 public class pickMood extends AppCompatActivity {
 
@@ -21,8 +25,8 @@ public class pickMood extends AppCompatActivity {
     private ImageView sadFace;
     private ImageView speechlessFace;
 
-    //Show today Date
-    //String selectedDate = getIntent().getStringExtra("selectedDate");
+    //Variable
+    String selectedEmoji;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,38 +51,89 @@ public class pickMood extends AppCompatActivity {
         speechlessFace = findViewById(R.id.speechlessEmoji);
 
         happyFace.setOnClickListener(v -> {
+            selectedEmoji = "happy";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) happyFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Great to hear that you had an amazing day xD");
-            jumpToDiaryPage(selectedDate);
+
+            jumpToDiaryPage(byteArray);
         });
 
         angryFace.setOnClickListener(v -> {
+            selectedEmoji = "angry";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) angryFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Completely normal to feel angry sometimes!");
-            jumpToDiaryPage(selectedDate);
+
+            jumpToDiaryPage(byteArray);
         });
 
         anxiousFace.setOnClickListener(v -> {
+            selectedEmoji = "anxious";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) anxiousFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Chill and Relax, My Friend :)");
-            jumpToDiaryPage(selectedDate);
+            jumpToDiaryPage(byteArray);
         });
 
         confuseFace.setOnClickListener(v -> {
+            selectedEmoji = "confuse";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) confuseFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Get some rest! Don't think too much!");
-            jumpToDiaryPage(selectedDate);
+            jumpToDiaryPage(byteArray);
         });
 
         mehFace.setOnClickListener(v -> {
+            selectedEmoji = "meh";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) mehFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Do something that you enjoy the most :)");
-            jumpToDiaryPage(selectedDate);
+            jumpToDiaryPage(byteArray);
         });
 
         sadFace.setOnClickListener(v -> {
+            selectedEmoji= "sad";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) sadFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Don't be sad. Express your feeling out!!!");
-            jumpToDiaryPage(selectedDate);
+            jumpToDiaryPage(byteArray);
         });
 
         speechlessFace.setOnClickListener(v -> {
+            selectedEmoji = "speechless";
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) speechlessFace.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
             showToast("Is something not going well?");
-            jumpToDiaryPage(selectedDate);
+            jumpToDiaryPage(byteArray);
         });
 
     }
@@ -88,13 +143,13 @@ public class pickMood extends AppCompatActivity {
     }
 
     // Jump to diaryPage
-    private void jumpToDiaryPage(String selectedDate) {
+    private void jumpToDiaryPage(byte[] byteArray) {
         Intent intent = new Intent(pickMood.this, diaryPage.class);
-
-
-        intent.putExtra("selectedDate", selectedDate);
-
+        intent.putExtra("selectedDate", getIntent().getStringExtra("selectedDate"));
+        intent.putExtra("selectedEmoji", selectedEmoji);
+        intent.putExtra("emojiImage", byteArray);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
 }
