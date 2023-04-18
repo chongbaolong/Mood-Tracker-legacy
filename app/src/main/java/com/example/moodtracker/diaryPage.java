@@ -183,7 +183,7 @@ public class diaryPage extends AppCompatActivity {
                     String diaryTitle = ((TextInputEditText) findViewById(R.id.diaryTitleInputText)).getText().toString();
                     String diaryContent = ((TextInputEditText) findViewById(R.id.diaryContentInputText)).getText().toString();
 
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    /*SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                     ContentValues values = new ContentValues();
                     values.put(Diary.DiaryEntry.COLUMN_SELECTED_DATE, selectedDate);
@@ -197,6 +197,103 @@ public class diaryPage extends AppCompatActivity {
                         Toast.makeText(diaryPage.this, "Error: Failed to save data to database", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(diaryPage.this, "Saved! Live in the moment! \nMy Friend!", Toast.LENGTH_SHORT).show();
+                    }
+
+*/
+                    String[] projection = {
+                            Diary.DiaryEntry._ID,
+                            Diary.DiaryEntry.COLUMN_TITLE,
+                            Diary.DiaryEntry.COLUMN_CONTENT,
+                            Diary.DiaryEntry.COLUMN_SELECTED_DATE,
+                            Diary.DiaryEntry.COLUMN_SELECTED_EMOJI
+                    };
+
+                    String selection = null;
+                    String[] selectionArgs = null;
+
+                    String sortOrder =
+                            Diary.DiaryEntry.COLUMN_SELECTED_DATE + " DESC";
+
+                    try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
+                        Cursor cursor = db.query(
+                                Diary.DiaryEntry.TABLE_NAME,
+                                projection,
+                                selection,
+                                selectionArgs,
+                                null,
+                                null,
+                                sortOrder
+                        );
+
+                        while (cursor.moveToNext()) {
+                            int id = cursor.getInt(
+                                    cursor.getColumnIndexOrThrow(Diary.DiaryEntry._ID));
+                            String dateStr = cursor.getString(
+                                    cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_DATE)); //2023/04/18
+                            String emojiStr = cursor.getString(
+                                    cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_SELECTED_EMOJI));
+                            String titleS = cursor.getString(
+                                    cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_TITLE));
+                            String contentS = cursor.getString(
+                                    cursor.getColumnIndexOrThrow(Diary.DiaryEntry.COLUMN_CONTENT));
+
+                            if (dateStr.equals(selectedDate)) {
+                                DiaryEXIST = true;
+                                break;
+                            }
+                            else{
+                                DiaryEXIST = false;
+                            }
+                        }
+                        cursor.close();
+                    } catch (SQLException e) {
+                        // handle exception
+                    }
+
+                    if(DiaryEXIST == false){
+                        try (SQLiteDatabase db2 = dbHelper.getWritableDatabase();) {
+
+                            ContentValues values = new ContentValues();
+                            values.put(Diary.DiaryEntry.COLUMN_SELECTED_DATE, selectedDate);
+                            values.put(Diary.DiaryEntry.COLUMN_SELECTED_EMOJI, selectedEmoji);
+                            values.put(Diary.DiaryEntry.COLUMN_TITLE, diaryTitle);
+                            values.put(Diary.DiaryEntry.COLUMN_CONTENT, diaryContent);
+
+                            long newRowId = db2.insert(Diary.DiaryEntry.TABLE_NAME, null, values);
+
+                            if (newRowId == -1) {
+                                Toast.makeText(diaryPage.this, "Error: Failed to save data to database", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(diaryPage.this, "Saved! Live in the moment! \nMy Friend!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (SQLException e) {
+                            // handle exception
+                        }
+                    }
+                    else{
+                        try (SQLiteDatabase db2 = dbHelper.getWritableDatabase();) {
+
+                            String selection2 = Diary.DiaryEntry.COLUMN_SELECTED_DATE + " LIKE ?";
+                            String[] selectionArgs2 = { selectedDate };
+
+                            db2.delete(Diary.DiaryEntry.TABLE_NAME, selection2, selectionArgs2);
+
+                            ContentValues values = new ContentValues();
+                            values.put(Diary.DiaryEntry.COLUMN_SELECTED_DATE, selectedDate);
+                            values.put(Diary.DiaryEntry.COLUMN_SELECTED_EMOJI, selectedEmoji);
+                            values.put(Diary.DiaryEntry.COLUMN_TITLE, diaryTitle);
+                            values.put(Diary.DiaryEntry.COLUMN_CONTENT, diaryContent);
+
+                            long newRowId = db2.insert(Diary.DiaryEntry.TABLE_NAME, null, values);
+
+                            if (newRowId == -1) {
+                                Toast.makeText(diaryPage.this, "Error: Failed to save data to database", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(diaryPage.this, "Saved! Live in the moment! \nMy Friend!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (SQLException e) {
+                            // handle exception
+                        }
                     }
 
                     Intent intent = new Intent(diaryPage.this, mainPage.class);
