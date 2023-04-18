@@ -253,11 +253,11 @@ public class mainPage extends AppCompatActivity {
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     return true;
 
-                /*case R.id.diaryRecord:
-                    Intent intentDiary = new Intent(mainPage.this, diaryRecord.class);
+                case R.id.summary:
+                    Intent intentDiary = new Intent(mainPage.this, SummaryPage.class);
                     startActivity(intentDiary);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    return true;*/
+                    return true;
 //                case R.id.what:
 
                 default:

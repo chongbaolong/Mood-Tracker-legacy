@@ -17,31 +17,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoodTracker">
         <activity
+            android:name=".SummaryPage"
+            android:exported="false" />
+        <activity
             android:name=".Setting"
             android:exported="false"
-            android:parentActivityName=".mainPage"/>
+            android:parentActivityName=".mainPage" />
         <activity
             android:name=".quotePage"
             android:exported="false"
-            android:parentActivityName=".mainPage"/>
+            android:parentActivityName=".mainPage" />
         <activity
             android:name=".pickMood"
             android:exported="false"
-            android:parentActivityName=".mainPage"/>
+            android:parentActivityName=".mainPage" />
         <activity
             android:name=".diaryPage"
             android:exported="false"
-            android:parentActivityName=".mainPage"/>
+            android:parentActivityName=".mainPage" />
         <activity
             android:name=".mainPage"
-            android:exported="true" >
-
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
