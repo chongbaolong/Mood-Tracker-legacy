@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.moodtracker.utils.Shared;
@@ -26,9 +27,8 @@ import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class mainPage extends AppCompatActivity {
 
@@ -42,6 +42,9 @@ public class mainPage extends AppCompatActivity {
     String selectedEmoji;
 
     private MediaPlayer mp;
+
+    private Reminder mReminder;
+    private TimePicker mTimePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,6 +308,26 @@ public class mainPage extends AppCompatActivity {
 
             return true;
         }
+
+        else if (item_id == R.id.reminder) {
+
+           /* mTimePicker = findViewById(R.id.time_picker);
+            mReminder = new Reminder(this);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 20); // Reminder time is 8 PM
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            mReminder.setReminder(calendar);*/
+
+            Intent intentReminder = new Intent(mainPage.this, Reminder.class);
+            startActivity(intentReminder);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+            return true;
+        }
+
         return false;
     }
 }
